@@ -1,18 +1,20 @@
-
 import React, { useState } from "react";
+import { useMutation } from "@apollo/client";
 import { TextField, Button, Box } from "@mui/material";
+import { ADD_HABIT, GET_HABITS } from "../../graphql/habitQueries";
+
 
 function HabitForm() {
   const [habitName, setHabitName] = useState("");
   const [habitDescription, setHabitDescription] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle form submission logic here (e.g., send data to backend)
-    console.log("Habit Name:", habitName);
-    console.log("Habit Description:", habitDescription);
+  const [addHabit] = useMutation(ADD_HABIT, {
+    refetchQueries: [{ query: GET_HABITS }],
+  });
 
-    // Clear the form after submission
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await addHabit({ variables: { name: habitName, description: habitDescription } });
     setHabitName("");
     setHabitDescription("");
   };
