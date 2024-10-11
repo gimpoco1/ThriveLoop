@@ -6,6 +6,7 @@ export const GET_HABITS = gql`
       id
       name
       description
+      completedDates  
     }
   }
 `;
@@ -35,6 +36,15 @@ export const UPDATE_HABIT = gql`
       id
       name
       description
+    }
+  }
+`;
+
+export const MARK_HABIT_COMPLETE = gql`
+  mutation MarkHabitComplete($id: ID!, $date: String!) {
+    markHabitComplete(id: $id, date: $date) {
+      id
+      completedDates
     }
   }
 `;
